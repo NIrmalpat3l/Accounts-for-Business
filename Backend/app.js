@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-const uri = "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/?retryWrites=true&w=majority&appName=AccountDB";
+const uri = "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/Acc";
 mongoose.connect(uri)
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
