@@ -3,8 +3,9 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
-import Project from "./models/project.js"
+import Project from "./models/project.js";
 import Material from './models/material.js';
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -16,8 +17,8 @@ mongoose.connect(uri)
 
 // Middleware
 app.use(cors({
-    origin: "https://accounts-for-business.vercel.app",
-    Credential: true,
+    origin: "https://accounts-for-business-2bed.vercel.app",
+    credentials: true,
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,6 +73,5 @@ app.get('/api/materials/:projectId', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-
 
 export default app;
