@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material Details</title>
     <script>
+        const backendUrl = "https://accounts-for-business-backend.vercel.app";
+
         function getMaterialDetails() {
             const urlParams = new URLSearchParams(window.location.search);
             const materialId = urlParams.get("material_id");
 
-            fetch(`/api/materials/${materialId}`)
+            fetch(`${backendUrl}/api/materials/${materialId}`)
                 .then(response => response.json())
                 .then(material => {
-                    document.getElementById("material_name").textContent = material.material_name;
+                    document.getElementById("material_name").textContent = material.materialName;
                     document.getElementById("quantity").textContent = material.quantity;
-                    document.getElementById("cost_per_unit").textContent = material.cost_per_unit;
-                })
-                .catch(error => {
-                    console.error('Error fetching material details:', error);
+                    document.getElementById("cost_per_unit").textContent = material.costPerUnit;
                 });
         }
 

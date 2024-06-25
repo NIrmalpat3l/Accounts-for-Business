@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Project</title>
     <script>
+        const backendUrl = "https://accounts-for-business-backend.vercel.app";
+
         function addProject(event) {
             event.preventDefault();
 
@@ -12,23 +14,23 @@
             const start_date = document.getElementById("start_date").value;
             const end_date = document.getElementById("end_date").value;
 
-            fetch('/add_project', {
+            fetch(`${backendUrl}/api/projects`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ name, start_date, end_date })
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                alert(data);
+                alert("Project added successfully!");
                 loadProjects(); // Reload the projects list
             })
             .catch(error => console.error('Error:', error));
         }
 
         function loadProjects() {
-            fetch('/api/projects')
+            fetch(`${backendUrl}/api/projects`)
                 .then(response => response.json())
                 .then(projects => {
                     const projectList = document.getElementById("project_list");
