@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Materials</title>
+    <script>
+        function getProjectMaterials() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get("project_id");
+
+            fetch(`/api/materials/project/${projectId}`)
+                .then(response => response.json())
+                .then(materials => {
+                    const materialList = document.getElementById("material_list");
+                    materialList.innerHTML = ""; // Clear previous list
+                    materials.forEach(material => {
+                        const materialItem = document.createElement("li");
+                        const materialLink = document.createElement("a");
+                        materialLink.href = `view_material_detail.html?material_id=${material._id}`;
+                        materialLink.textContent = material.material_name;
+                        materialItem.appendChild(materialLink);
+                        materialList.appendChild(materialItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching project materials:', error);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", getProjectMaterials);
+        
+        function redirectToAddMaterial() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get("project_id");
+            window.location.href = `add_material.html?project_id=${projectId}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>Project Materials</h1>
+    <ul id="material_list"></ul>
+
+    <button onclick="redirectToAddMaterial()">Add Materials</button>
+</body>
+</html>

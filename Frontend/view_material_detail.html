@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Details</title>
+    <script>
+        function getMaterialDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const materialId = urlParams.get("material_id");
+
+            fetch(`/api/materials/${materialId}`)
+                .then(response => response.json())
+                .then(material => {
+                    document.getElementById("material_name").textContent = material.material_name;
+                    document.getElementById("quantity").textContent = material.quantity;
+                    document.getElementById("cost_per_unit").textContent = material.cost_per_unit;
+                })
+                .catch(error => {
+                    console.error('Error fetching material details:', error);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", getMaterialDetails);
+    </script>
+</head>
+<body>
+    <h1>Material Details</h1>
+    <p><strong>Material Name:</strong> <span id="material_name"></span></p>
+    <p><strong>Quantity:</strong> <span id="quantity"></span></p>
+    <p><strong>Cost per Unit:</strong> $<span id="cost_per_unit"></span></p>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Project</title>
+    <script>
+        function addProject(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("project_name").value;
+            const start_date = document.getElementById("start_date").value;
+            const end_date = document.getElementById("end_date").value;
+
+            fetch('/add_project', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, start_date, end_date })
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                loadProjects(); // Reload the projects list
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function loadProjects() {
+            fetch('/api/projects')
+                .then(response => response.json())
+                .then(projects => {
+                    const projectList = document.getElementById("project_list");
+                    projectList.innerHTML = "";
+                    projects.forEach(project => {
+                        const projectItem = document.createElement("li");
+                        const projectLink = document.createElement("a");
+                        projectLink.href = "view_materials.html?project_id=" + project._id;
+                        projectLink.textContent = project.name;
+                        projectItem.appendChild(projectLink);
+                        projectList.appendChild(projectItem);
+                    });
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", loadProjects);
+    </script>
+</head>
+<body>
+    <h1>Add New Project</h1>
+    <form onsubmit="addProject(event)">
+        <label for="project_name">Project Name:</label>
+        <input type="text" id="project_name" required><br>
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" required><br>
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" required><br>
+        <button type="submit">Add Project</button>
+    </form>
+
+    <h2>Existing Projects</h2>
+    <ul id="project_list"></ul>
+</body>
+</html>
