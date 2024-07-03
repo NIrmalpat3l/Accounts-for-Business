@@ -15,7 +15,7 @@ mongoose.connect(uri)
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-Middleware
+// Middleware
 app.use(cors({
     origin: "https://accounts-for-business-backend.vercel.app",
     credentials: true,
