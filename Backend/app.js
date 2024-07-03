@@ -4,28 +4,41 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import Project from "./models/project.js";
 import Material from './models/material.js';
-import {MongoClient} from "mongodb";
+import { MongoClient } from "mongodb";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
 const uri = process.env.MONGODB_URI || "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/?retryWrites=true&w=majority&appName=AccountDB";
-async function main() {
-    const client = new MongoClient(uri);
+
+async function injectDB(connect) {
     try {
-        await client.connect();
-        const database = client.db("Business-Accounting");
-        const collection =  database.collection("test");
-        console.log("MongoDB connected");
-    }catch(er){
-        console.log(er);
-    } finally {
-        await client.close();
+        await connect.db("Business-Accounting").collection("test");
+        console.log("Collection 'test' established successfully.");
+    } catch (e) {
+        console.error(`Unable to establish collection`)
     }
 }
 
-main();
+MongoClient.connect(uri, {
+    maxPoolSize: 50,
+    wtimeoutMS: 2500,
+    useNewUrlParser: true
+})
+    .then(client => {
+
+        const result = injectDB(client);
+        if (result) {
+            console.log("MongoDB connected");
+        } else {
+            console.log("error in connecting MongoDB");
+        }
+    })
+    .catch(err => {
+        console.error(err.stack);
+        process.exit(1);
+    });
 // mongoose.connect(uri, {
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true
@@ -88,7 +101,7 @@ app.get('/api/materials/:projectId', async (req, res) => {
     }
 });
 
-app.use("/" , (_,res) => res.status(404).json({Hello : "Nirmal Patel"}))
+app.use("/", (_, res) => res.status(404).json({ Hello: "Nirmal Patel" }))
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
