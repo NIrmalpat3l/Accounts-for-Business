@@ -15,17 +15,17 @@ mongoose.connect(uri)
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Middleware
-// app.use(cors({
-//     origin: "https://accounts-for-business-backend.vercel.app",
-//     credentials: true,
-// }));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+Middleware
+app.use(cors({
+    origin: "https://accounts-for-business-backend.vercel.app",
+    credentials: true,
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors());
-app.use(express.json());
-app.use("*", (req, res) => res.status(404).json({error: "not found"}));
+// app.use(cors());
+// app.use(express.json());
+// app.use("*", (req, res) => res.status(404).json({error: "not found"}));
 // const router = express.Router();
 
 
@@ -37,50 +37,50 @@ app.use("*", (req, res) => res.status(404).json({error: "not found"}));
 //     }
 // )
 
-// app.get('/api/projects', async (req, res) => {
-//     try {
-//         const projects = await Project.find();
-//         res.json(projects);
-//     } catch (error) {
-//         console.error('Error fetching projects:', error);
-//         res.status(500).send('Server error');
-//     }
-// });
+app.get('/api/projects', async (req, res) => {
+    try {
+        const projects = await Project.find();
+        res.json(projects);
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        res.status(500).send('Server error');
+    }
+});
 
-// app.get('/api/materials/:projectId', async (req, res) => {
-//     const { projectId } = req.params;
-//     try {
-//         const materials = await Material.find({ project_id: projectId });
-//         res.json(materials);
-//     } catch (error) {
-//         console.error('Error fetching materials:', error);
-//         res.status(500).send('Server error');
-//     }
-// });
-// // Routes
-// app.post('/add_project', async (req, res) => {
-//     const { name, start_date, end_date } = req.body;
-//     const newProject = new Project({ name, start_date, end_date });
-//     try {
-//         await newProject.save();
-//         res.status(200).send('New project added successfully');
-//     } catch (error) {
-//         console.error('Error adding project:', error);
-//         res.status(500).send('Server error');
-//     }
-// });
+app.get('/api/materials/:projectId', async (req, res) => {
+    const { projectId } = req.params;
+    try {
+        const materials = await Material.find({ project_id: projectId });
+        res.json(materials);
+    } catch (error) {
+        console.error('Error fetching materials:', error);
+        res.status(500).send('Server error');
+    }
+});
+// Routes
+app.post('/add_project', async (req, res) => {
+    const { name, start_date, end_date } = req.body;
+    const newProject = new Project({ name, start_date, end_date });
+    try {
+        await newProject.save();
+        res.status(200).send('New project added successfully');
+    } catch (error) {
+        console.error('Error adding project:', error);
+        res.status(500).send('Server error');
+    }
+});
 
-// app.post('/add_material', async (req, res) => {
-//     const { project_id, material_name, quantity, cost_per_unit } = req.body;
-//     const newMaterial = new Material({ project_id, material_name, quantity, cost_per_unit });
-//     try {
-//         await newMaterial.save();
-//         res.status(200).send('Material added successfully');
-//     } catch (error) {
-//         console.error('Error adding material:', error);
-//         res.status(500).send('Server error');
-//     }
-// });
+app.post('/add_material', async (req, res) => {
+    const { project_id, material_name, quantity, cost_per_unit } = req.body;
+    const newMaterial = new Material({ project_id, material_name, quantity, cost_per_unit });
+    try {
+        await newMaterial.save();
+        res.status(200).send('Material added successfully');
+    } catch (error) {
+        console.error('Error adding material:', error);
+        res.status(500).send('Server error');
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
