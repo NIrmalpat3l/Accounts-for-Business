@@ -53,6 +53,7 @@ app.post('/add_material', async (req, res) => {
 app.get('/api/projects', async (req, res) => {
     try {
         const projects = await Project.find();
+        console.log(projects);
         res.json(projects);
     } catch (error) {
         console.error('Error fetching projects:', error);
@@ -71,7 +72,7 @@ app.get('/api/materials/:projectId', async (req, res) => {
     }
 });
 
-app.use("*" , (_,res) => res.status(404).json({Hello : "Nirmal Patel"}))
+app.use("/" , (_,res) => res.status(404).json({Hello : "Nirmal Patel"}))
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
