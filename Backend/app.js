@@ -23,6 +23,8 @@ mongoose.connect(uri)
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cors());
+app.use(express.json());
 app.use("*", (req, res) => res.status(404).json({error: "not found"}));
 // const router = express.Router();
 
