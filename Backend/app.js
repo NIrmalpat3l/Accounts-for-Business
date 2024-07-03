@@ -4,18 +4,34 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import Project from "./models/project.js";
 import Material from './models/material.js';
+import {MongoClient} from "mongodb";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
 const uri = process.env.MONGODB_URI || "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/?retryWrites=true&w=majority&appName=AccountDB";
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+async function main() {
+    const client = new MongoClient(uri);
+    try {
+        await client.connect();
+        const database = client.db("Business-Accounting");
+        const collection =  database.collection("test");
+        console.log("MongoDB connected");
+    }catch(er){
+        console.log(er);
+    } finally {
+        await client.close();
+    }
+}
+
+main();
+// mongoose.connect(uri, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// })
+// .then(() => console.log('MongoDB connected'))
+// .catch(err => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(cors({
