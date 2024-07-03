@@ -17,7 +17,7 @@ mongoose.connect(uri)
 
 // Middleware
 app.use(cors({
-    origin: "https://accounts-for-business-2bed.vercel.app",
+    origin: "https://accounts-for-business-backend.vercel.app",
     credentials: true,
 }));
 app.use(bodyParser.json());
