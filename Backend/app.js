@@ -35,17 +35,6 @@ router.route("/").get(
     }
 )
 
-router.route("/api/projects").get(
-    async (req, res) => {
-        try {
-            const projects = await Project.find();
-            res.json(projects);
-        } catch (error) {
-            console.error('Error fetching projects:', error);
-            res.status(500).send('Server error');
-        }
-    }
-)
 app.get('/api/projects', async (req, res) => {
     try {
         const projects = await Project.find();
