@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import path from 'path';
 import Project from "./models/project.js";
 import Material from './models/material.js';
 
@@ -10,53 +9,24 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-const uri = "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/?retryWrites=true&w=majority&appName=AccountDB";
-mongoose.connect(uri)
+const uri = process.env.MONGODB_URI || "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/?retryWrites=true&w=majority&appName=AccountDB";
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+})
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(cors({
-    origin: "https://accounts-for-business-backend.vercel.app",
+    origin: "https://accounts-for-business-2bed.vercel.app",
     credentials: true,
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use(cors());
-// app.use(express.json());
-// app.use("*", (req, res) => res.status(404).json({error: "not found"}));
-// const router = express.Router();
-
-
-// router.route("/").get(
-//     async (req, res) => {
-//         res.send({
-//             hii : "hello"
-//         })
-//     }
-// )
-
-app.get('/api/projects', async (req, res) => {
-    try {
-        const projects = await Project.find();
-        res.json(projects);
-    } catch (error) {
-        console.error('Error fetching projects:', error);
-        res.status(500).send('Server error');
-    }
-});
-
-app.get('/api/materials/:projectId', async (req, res) => {
-    const { projectId } = req.params;
-    try {
-        const materials = await Material.find({ project_id: projectId });
-        res.json(materials);
-    } catch (error) {
-        console.error('Error fetching materials:', error);
-        res.status(500).send('Server error');
-    }
-});
 // Routes
 app.post('/add_project', async (req, res) => {
     const { name, start_date, end_date } = req.body;
@@ -78,6 +48,27 @@ app.post('/add_material', async (req, res) => {
         res.status(200).send('Material added successfully');
     } catch (error) {
         console.error('Error adding material:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/projects', async (req, res) => {
+    try {
+        const projects = await Project.find();
+        res.json(projects);
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/materials/:projectId', async (req, res) => {
+    const { projectId } = req.params;
+    try {
+        const materials = await Material.find({ project_id: projectId });
+        res.json(materials);
+    } catch (error) {
+        console.error('Error fetching materials:', error);
         res.status(500).send('Server error');
     }
 });
