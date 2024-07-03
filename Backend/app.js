@@ -12,9 +12,7 @@ const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI || "mongodb+srv://nspp3305:NSPP3305@accountdb.cjvhgg1.mongodb.net/?retryWrites=true&w=majority&appName=AccountDB";
 mongoose.connect(uri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
+    useUnifiedTopology: true
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
@@ -73,6 +71,7 @@ app.get('/api/materials/:projectId', async (req, res) => {
     }
 });
 
+app.use("*" , (_,res) => res.status(404).json({Hello : "Nirmal Patel"}))
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
